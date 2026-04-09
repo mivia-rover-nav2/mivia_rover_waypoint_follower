@@ -4,7 +4,7 @@ waypoint_follower:
     # CSV format (one waypoint per row, no header):
     #   x, y, qx, qy, qz, qw
     # Lines starting with '#' and empty lines are ignored.
-    waypoints_csv: ""
+    waypoints_csv: "/home/alexios/Projects/mivia_rover/src/mivia_rover_waypoint_follower/waypoints/trajectory.csv"
 
     # NAV2 controller server parameters — must match mivia_rover_nav2_config.yaml
     controller_id: "FollowPath"

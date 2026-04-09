@@ -11,18 +11,11 @@ def generate_launch_description():
     pkg_share = get_package_share_directory('mivia_rover_waypoint_follower')
 
     default_config = os.path.join(pkg_share, 'config', 'waypoint_follower.yaml')
-    default_csv = os.path.join(pkg_share, 'waypoints', 'example_waypoints.csv')
 
     config_arg = DeclareLaunchArgument(
         'config',
         default_value=default_config,
         description='Path to the waypoint_follower YAML config file',
-    )
-
-    csv_arg = DeclareLaunchArgument(
-        'waypoints_csv',
-        default_value=default_csv,
-        description='Absolute path to the CSV file with waypoints (x,y,qx,qy,qz,qw)',
     )
 
     waypoint_follower_node = Node(
@@ -32,12 +25,10 @@ def generate_launch_description():
         output='screen',
         parameters=[
             LaunchConfiguration('config'),
-            {'waypoints_csv': LaunchConfiguration('waypoints_csv')},
         ],
     )
 
     return LaunchDescription([
         config_arg,
-        csv_arg,
         waypoint_follower_node,
     ])

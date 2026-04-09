@@ -1,0 +1,10 @@
+# Waypoints for mivia_rover_waypoint_follower
+# Format: x, y, qx, qy, qz, qw  (frame: map)
+# Orientation is expressed as a quaternion.
+# Use a tool like https://quaternions.online to convert yaw (deg) to quaternion.
+#
+# Example: straight path along X axis
+1.0, 0.0, 0.0, 0.0, 0.0, 1.0
+2.0, 0.0, 0.0, 0.0, 0.0, 1.0
+3.0, 0.0, 0.0, 0.0, 0.0, 1.0
+4.0, 0.0, 0.0, 0.0, 0.0, 1.0

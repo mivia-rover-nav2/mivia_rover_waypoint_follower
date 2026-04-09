@@ -1,0 +1,11 @@
+waypoint_follower:
+  ros__parameters:
+    # Absolute path to the CSV file containing waypoints.
+    # CSV format (one waypoint per row, no header):
+    #   x, y, qx, qy, qz, qw
+    # Lines starting with '#' and empty lines are ignored.
+    waypoints_csv: ""
+
+    # NAV2 controller server parameters — must match mivia_rover_nav2_config.yaml
+    controller_id: "FollowPath"
+    goal_checker_id: "general_goal_checker"

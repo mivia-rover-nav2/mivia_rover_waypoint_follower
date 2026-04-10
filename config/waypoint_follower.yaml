@@ -4,8 +4,18 @@ waypoint_follower:
     # CSV format (one waypoint per row, no header):
     #   x, y, qx, qy, qz, qw
     # Lines starting with '#' and empty lines are ignored.
-    waypoints_csv: "/home/alexios/Projects/mivia_rover/src/mivia_rover_waypoint_follower/waypoints/trajectory.csv"
+    waypoints_csv: "/home/alexios/Projects/mivia_rover/src/mivia_rover_waypoint_follower/waypoints/trajectory_linear.csv"
 
     # NAV2 controller server parameters — must match mivia_rover_nav2_config.yaml
     controller_id: "FollowPath"
     goal_checker_id: "general_goal_checker"
+    odom_topic: "/odometry/filtered"
+
+    # Maximum Euclidean distance (m) between first and last waypoint to consider
+    # the trajectory circular.
+    circular_threshold: 0.5
+
+    # For circular trajectories, keep 2.5 loops ahead so the final goal pose is
+    # different from the current starting pose of the loop. The node refreshes
+    # the path when about half of the current circular goal is left.
+    circular_loops_ahead: 0.75

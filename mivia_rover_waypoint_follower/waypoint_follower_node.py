@@ -29,7 +29,7 @@ class WaypointFollowerNode(Node):
         self._odom_topic = self.get_parameter('odom_topic').get_parameter_value().string_value
         self._circular_threshold = self.get_parameter('circular_threshold').get_parameter_value().double_value
         self._circular_loops_ahead = max(
-            0.5,
+            0.1,
             self.get_parameter('circular_loops_ahead').get_parameter_value().double_value,
         )
 

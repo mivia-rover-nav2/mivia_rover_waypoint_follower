@@ -22,6 +22,7 @@ class WaypointFollowerNode(Node):
         self.declare_parameter('odom_topic', '/odometry/filtered')
         self.declare_parameter('circular_threshold', 0.5)
         self.declare_parameter('circular_loops_ahead', 2.5)
+        self.declare_parameter('circular_refresh_fraction', 0.5)
 
         csv_path = self.get_parameter('waypoints_csv').get_parameter_value().string_value
         self._controller_id = self.get_parameter('controller_id').get_parameter_value().string_value
@@ -31,6 +32,13 @@ class WaypointFollowerNode(Node):
         self._circular_loops_ahead = max(
             0.1,
             self.get_parameter('circular_loops_ahead').get_parameter_value().double_value,
+        )
+        self._circular_refresh_fraction = min(
+            1.0,
+            max(
+                0.0,
+                self.get_parameter('circular_refresh_fraction').get_parameter_value().double_value,
+            ),
         )
 
         if not csv_path:
@@ -77,9 +85,10 @@ class WaypointFollowerNode(Node):
         self._refresh_after_points = 0
 
         if self._is_circular:
+            refresh_percent = self._circular_refresh_fraction * 100.0
             self.get_logger().info(
                 f'Circular trajectory detected (start≈end within {self._circular_threshold} m). '
-                f'Will keep {self._circular_loops_ahead} loops ahead and refresh at half path.'
+                f'Will keep {self._circular_loops_ahead} loops ahead and refresh at {refresh_percent:.0f}% of the current path.'
             )
         else:
             self.get_logger().info('Linear trajectory detected. Will follow once.')
@@ -200,7 +209,7 @@ class WaypointFollowerNode(Node):
         self.get_logger().info(
             f'Circular refresh triggered after {self._circular_progress_points} waypoint steps.'
         )
-        self._send_path(reason='half path completed')
+        self._send_path(reason='refresh threshold reached')
 
     def _build_path(self, waypoints: list) -> Path:
         path = Path()
@@ -259,7 +268,10 @@ class WaypointFollowerNode(Node):
             )
             self._last_nearest_index = start_index
             self._circular_progress_points = 0
-            self._refresh_after_points = max(1, total_waypoints // 2)
+            self._refresh_after_points = max(
+                1,
+                int(math.ceil(total_waypoints * self._circular_refresh_fraction)),
+            )
         else:
             path = self._build_path(self._waypoints)
             label = f'path with {len(path.poses)} poses'

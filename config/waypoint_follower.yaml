@@ -4,7 +4,7 @@ waypoint_follower:
     # CSV format (one waypoint per row, no header):
     #   x, y, qx, qy, qz, qw
     # Lines starting with '#' and empty lines are ignored.
-    waypoints_csv: "/home/alexios/Projects/mivia_rover/src/mivia_rover_waypoint_follower/waypoints/trajectory_pillola_stretta.csv"
+    waypoints_csv: "/home/alexios/Projects/mivia_rover/src/mivia_rover_waypoint_follower/waypoints/trajectory_circular.csv"
 
     # NAV2 controller server parameters — must match mivia_rover_nav2_config.yaml
     controller_id: "FollowPath"
@@ -19,4 +19,8 @@ waypoint_follower:
     # loop without landing exactly on the opposite side of the oval, otherwise
     # the controller may prefer stopping when the Euclidean distance to that
     # temporary endpoint starts increasing again.
-    circular_loops_ahead: 0.25
+    circular_loops_ahead: 0.22
+
+    # Refresh the circular path after this fraction of the currently published
+    # temporary path has been traversed. 0.5 = halfway, 0.6 = slightly after halfway.
+    circular_refresh_fraction: 0.5
